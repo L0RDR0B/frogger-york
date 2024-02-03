@@ -1,4 +1,4 @@
-This is a friendly parody of Frogger, based upon the coding tutorial by Zigurous below, created at the University of York.
+This is a friendly parody of Frogger, based upon the coding tutorial by Zigurous below, created at an event at University of York.
 
 # Frogger (2D)
 
