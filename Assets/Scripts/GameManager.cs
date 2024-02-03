@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
     public int Score => score;
     public int Time => time;
 
+    private bool endGame;
+
     private void Awake()
     {
         if (Instance != null)
@@ -35,22 +38,31 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             Application.targetFrameRate = 60;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
     }
 
     private void Start()
     {
+        endGame = false;
         NewGame();
     }
 
     private void NewGame()
     {
-        gameOverMenu.SetActive(false);
+        if (endGame)
+        {
+            SceneManager.LoadScene("Main Menu");
+        }
 
-        SetScore(0);
-        SetLives(3);
-        NewLevel();
+        else
+        {
+            gameOverMenu.SetActive(false);
+
+            SetScore(0);
+            SetLives(3);
+            NewLevel();
+        }
     }
 
     private void NewLevel()
@@ -121,6 +133,12 @@ public class GameManager : MonoBehaviour
                 playAgain = true;
             }
 
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                playAgain = true;
+                endGame = true;
+            }
+
             yield return null;
         }
 
@@ -135,7 +153,7 @@ public class GameManager : MonoBehaviour
     public void HomeOccupied()
     {
         frogger.gameObject.SetActive(false);
-        reachHome();
+        ReachHome();
 
         int bonusPoints = time * 20;
         SetScore(score + bonusPoints + 50);
@@ -176,7 +194,7 @@ public class GameManager : MonoBehaviour
         livesText.text = lives.ToString();
     }
 
-    public void reachHome()
+    public void ReachHome()
     {
         sfx.clip = home;
         sfx.Play();
@@ -184,19 +202,19 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void hopping()
+    public void Hop()
     {
         sfx.clip = hop;
         sfx.Play();
     }
 
-    public void deathPlunk()
+    public void DeathPlunk()
     {
         sfx.clip = plunk;
         sfx.Play();
     }
 
-    public void deathSquash()
+    public void DeathSquash()
     {
         sfx.clip = squash;
         sfx.Play();
