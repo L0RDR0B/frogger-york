@@ -71,6 +71,7 @@ public class Frogger : MonoBehaviour
         {
             transform.position = destination;
             Death();
+            GameManager.Instance.deathPlunk();
         }
         // Conditions pass, move to the destination
         else
@@ -112,6 +113,8 @@ public class Frogger : MonoBehaviour
         transform.position = destination;
         spriteRenderer.sprite = idleSprite;
         cooldown = false;
+
+        GameManager.Instance.hopping();
     }
 
     public void Respawn()
@@ -155,6 +158,7 @@ public class Frogger : MonoBehaviour
 
         if (enabled && hitObstacle && !onPlatform) {
             Death();
+            GameManager.Instance.deathSquash();
         }
     }
 

@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text livesText;
     [SerializeField] private Text scoreText;
 
+    public AudioSource bgm;
+    public AudioSource sfx;
+    [SerializeField] private AudioClip home, hop, plunk, squash, timeUp;
+
     private int lives;
     private int score;
     private int time;
@@ -61,6 +65,7 @@ public class GameManager : MonoBehaviour
     private void Respawn()
     {
         frogger.Respawn();
+        bgm.Play();
 
         StopAllCoroutines();
         StartCoroutine(Timer(30));
@@ -80,11 +85,15 @@ public class GameManager : MonoBehaviour
         }
 
         frogger.Death();
+
+        sfx.clip = timeUp;
+        sfx.Play();
     }
 
     public void Died()
     {
         SetLives(lives - 1);
+        bgm.Stop();
 
         if (lives > 0) {
             Invoke(nameof(Respawn), 1f);
@@ -126,6 +135,7 @@ public class GameManager : MonoBehaviour
     public void HomeOccupied()
     {
         frogger.gameObject.SetActive(false);
+        reachHome();
 
         int bonusPoints = time * 20;
         SetScore(score + bonusPoints + 50);
@@ -164,6 +174,32 @@ public class GameManager : MonoBehaviour
     {
         this.lives = lives;
         livesText.text = lives.ToString();
+    }
+
+    public void reachHome()
+    {
+        sfx.clip = home;
+        sfx.Play();
+        bgm.Stop();
+    }
+
+
+    public void hopping()
+    {
+        sfx.clip = hop;
+        sfx.Play();
+    }
+
+    public void deathPlunk()
+    {
+        sfx.clip = plunk;
+        sfx.Play();
+    }
+
+    public void deathSquash()
+    {
+        sfx.clip = squash;
+        sfx.Play();
     }
 
 }
